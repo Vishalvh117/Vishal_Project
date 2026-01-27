@@ -13,7 +13,8 @@ const contactInfo = [
     icon: MapPin,
     label: 'Location',
     value: 'Hyderabad, India',
-    href: '#',
+    href: 'https://www.google.com/maps/search/?api=1&query=Hyderabad,India',
+    external: true,
   },
   {
     icon: Phone,
@@ -78,7 +79,9 @@ const ContactSection = () => {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors group"
+                    target={'external' in item ? '_blank' : undefined}
+                    rel={'external' in item ? 'noopener noreferrer' : undefined}
+                    className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors group cursor-pointer"
                   >
                     <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-colors">
                       <item.icon className="w-5 h-5 text-primary" />
