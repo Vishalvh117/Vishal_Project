@@ -104,7 +104,7 @@ const CertificationsSection = () => {
               whileHover={{ scale: 1.03, y: -5 }}
               className="glass-card neon-border p-6 rounded-2xl group cursor-pointer relative"
             >
-              <div className="flex flex-col items-center text-center gap-4">
+              <div className="relative z-10 flex flex-col items-center text-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-2xl group-hover:from-primary/30 group-hover:to-secondary/30 transition-colors">
                   {cert.icon}
                 </div>
@@ -122,8 +122,11 @@ const CertificationsSection = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCert(cert)}
-                  className="mt-2 flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedCert(cert);
+                  }}
+                  className="mt-2 flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
                 >
                   <Eye className="w-4 h-4" />
                   <span className="text-sm font-medium">View Certificate</span>
