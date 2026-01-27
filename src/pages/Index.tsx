@@ -4,6 +4,7 @@ import AboutSection from '@/components/sections/AboutSection';
 import SkillsSection from '@/components/sections/SkillsSection';
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import ExperienceSection from '@/components/sections/ExperienceSection';
+import CertificationsSection from '@/components/sections/CertificationsSection';
 import ContactSection from '@/components/sections/ContactSection';
 import Footer from '@/components/Footer';
 import HorizontalScrollSection from '@/components/HorizontalScrollSection';
@@ -23,6 +24,7 @@ const Index = () => {
         <ParallaxSection />
         <ProjectsSection />
         <ExperienceSection />
+        <CertificationsSection />
         <ContactSection />
       </main>
       <Footer />
