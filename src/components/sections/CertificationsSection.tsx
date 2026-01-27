@@ -1,17 +1,29 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { Award, ExternalLink } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Award, Eye, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const certifications = [
   {
-    title: 'Artificial Intelligence And Machine Learning',
+    title: 'GIGA Skill Technology',
     issuer: 'IndoSkill Pvt Ltd',
     icon: '🤖',
+    certificateUrl: '/certificates/giga-skill.pdf',
+    type: 'pdf',
   },
   {
     title: 'Cloud Computing',
     issuer: 'NPTEL',
     icon: '☁️',
+    certificateUrl: '/certificates/cloud-computing.pdf',
+    type: 'pdf',
+  },
+  {
+    title: 'Introduction to Career Skills in Data Analytics',
+    issuer: 'LinkedIn Learning',
+    icon: '📊',
+    certificateUrl: '/certificates/data-analytics.jpg',
+    type: 'image',
   },
 ];
 
@@ -42,6 +54,7 @@ const itemVariants = {
 const CertificationsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [selectedCert, setSelectedCert] = useState<typeof certifications[0] | null>(null);
 
   return (
     <section id="certifications" className="py-24 relative overflow-hidden">
@@ -82,16 +95,16 @@ const CertificationsSection = () => {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto"
+          className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto"
         >
-          {certifications.map((cert, index) => (
+          {certifications.map((cert) => (
             <motion.div
               key={cert.title}
               variants={itemVariants}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="glass-card neon-border p-6 rounded-2xl group cursor-pointer"
+              className="glass-card neon-border p-6 rounded-2xl group cursor-pointer relative"
             >
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col items-center text-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-2xl group-hover:from-primary/30 group-hover:to-secondary/30 transition-colors">
                   {cert.icon}
                 </div>
@@ -99,11 +112,22 @@ const CertificationsSection = () => {
                   <h3 className="text-lg font-semibold font-display mb-1 group-hover:text-primary transition-colors">
                     {cert.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground flex items-center gap-1">
-                    <span>Issued by</span>
+                  <p className="text-sm text-muted-foreground">
+                    <span>Issued by </span>
                     <span className="text-primary font-medium">{cert.issuer}</span>
                   </p>
                 </div>
+
+                {/* Eye Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedCert(cert)}
+                  className="mt-2 flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 transition-colors"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span className="text-sm font-medium">View Certificate</span>
+                </motion.button>
               </div>
 
               {/* Glow effect on hover */}
@@ -117,6 +141,33 @@ const CertificationsSection = () => {
           ))}
         </motion.div>
       </div>
+
+      {/* Certificate Modal */}
+      <Dialog open={!!selectedCert} onOpenChange={() => setSelectedCert(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-auto bg-background/95 backdrop-blur-xl border-primary/20">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-display flex items-center gap-2">
+              <Award className="w-5 h-5 text-primary" />
+              {selectedCert?.title}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            {selectedCert?.type === 'image' ? (
+              <img
+                src={selectedCert.certificateUrl}
+                alt={selectedCert.title}
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            ) : (
+              <iframe
+                src={selectedCert?.certificateUrl}
+                className="w-full h-[70vh] rounded-lg border border-border"
+                title={selectedCert?.title}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
