@@ -126,51 +126,41 @@ const ContactSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
-            <div className="glass-card p-8 rounded-2xl">
-              <h3 className="text-2xl font-semibold font-display mb-6 text-center">
-                Let's work together
-              </h3>
-              <p className="text-muted-foreground mb-8 text-center">
-                I'm always open to discussing new opportunities, creative ideas, or
-                potential collaborations. Feel free to reach out!
-              </p>
+            <div className="space-y-4">
+              {contactInfo.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => handleContactClick(item)}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors group cursor-pointer w-full text-left"
+                >
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-colors pointer-events-none">
+                    <item.icon className="w-5 h-5 text-primary pointer-events-none" />
+                  </div>
+                  <div className="pointer-events-none">
+                    <p className="text-sm text-muted-foreground">{item.label}</p>
+                    <p className="font-medium">{item.value}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
 
-              <div className="space-y-4">
-                {contactInfo.map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() => handleContactClick(item)}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors group cursor-pointer w-full text-left"
+            {/* Social Links */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <span className="text-sm text-muted-foreground">Find me on:</span>
+              <div className="flex gap-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="w-10 h-10 rounded-lg bg-muted/30 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted/50 transition-all duration-300 cursor-pointer hover:scale-110 hover:shadow-[0_0_15px_hsl(var(--primary)/0.3)]"
                   >
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-colors pointer-events-none">
-                      <item.icon className="w-5 h-5 text-primary pointer-events-none" />
-                    </div>
-                    <div className="pointer-events-none">
-                      <p className="text-sm text-muted-foreground">{item.label}</p>
-                      <p className="font-medium">{item.value}</p>
-                    </div>
-                  </button>
+                    <social.icon className="w-5 h-5 pointer-events-none" />
+                  </a>
                 ))}
-              </div>
-
-              {/* Social Links */}
-              <div className="flex items-center justify-center gap-4 mt-8 pt-8 border-t border-border">
-                <span className="text-sm text-muted-foreground">Find me on:</span>
-                <div className="flex gap-3">
-                  {socialLinks.map((social) => (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.label}
-                      className="w-10 h-10 rounded-lg bg-muted/30 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-muted/50 transition-all duration-300 cursor-pointer hover:scale-110 hover:shadow-[0_0_15px_hsl(var(--primary)/0.3)]"
-                    >
-                      <social.icon className="w-5 h-5 pointer-events-none" />
-                    </a>
-                  ))}
-                </div>
               </div>
             </div>
           </motion.div>
