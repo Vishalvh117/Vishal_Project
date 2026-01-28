@@ -222,13 +222,13 @@ const SkillCard = ({ category, categoryIndex, isInView }: {
             ))}
           </div>
           
-          <motion.p 
-            className="absolute bottom-4 right-4 text-xs text-muted-foreground"
-            animate={{ opacity: [0.5, 1, 0.5] }}
+          <motion.span 
+            className="absolute top-4 right-4 text-xs font-medium px-2 py-1 rounded-full bg-primary/20 text-primary border border-primary/30 backdrop-blur-sm"
+            animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             Click to flip
-          </motion.p>
+          </motion.span>
         </div>
 
         {/* Back of card */}
