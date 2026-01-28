@@ -113,20 +113,25 @@ const Navbar = () => {
             <div className="container px-4">
               <div className="glass-card rounded-2xl p-4 space-y-2">
                 {navItems.map((item, index) => (
-                  <motion.a
+                  <motion.button
                     key={item.label}
-                    href={item.href}
+                    type="button"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollToSection(item.href);
+                    onClick={() => {
+                      const element = document.querySelector(item.href);
+                      if (element) {
+                        setIsMobileMenuOpen(false);
+                        setTimeout(() => {
+                          element.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }
                     }}
-                    className="block px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 rounded-lg transition-colors"
+                    className="block w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 rounded-lg transition-colors"
                   >
                     {item.label}
-                  </motion.a>
+                  </motion.button>
                 ))}
                 <div className="pt-2 border-t border-border">
                   <Button
