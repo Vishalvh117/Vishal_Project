@@ -57,14 +57,26 @@ const ContactSection = () => {
 
   const handleConfirm = useCallback(() => {
     if (pendingAction) {
-      if (pendingAction.external) {
-        window.open(pendingAction.href, '_blank', 'noopener,noreferrer');
-      } else {
-        window.location.href = pendingAction.href;
-      }
+      // Close dialog first
+      setDialogOpen(false);
+      
+      // Use setTimeout to ensure dialog closes before redirect
+      setTimeout(() => {
+        // For all links, use window.open to ensure proper handling
+        if (pendingAction.external) {
+          window.open(pendingAction.href, '_blank', 'noopener,noreferrer');
+        } else {
+          // For mailto: and tel: links, create a temporary anchor and click it
+          const link = document.createElement('a');
+          link.href = pendingAction.href;
+          link.target = '_self';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+        setPendingAction(null);
+      }, 100);
     }
-    setDialogOpen(false);
-    setPendingAction(null);
   }, [pendingAction]);
 
   const handleCancel = useCallback(() => {
@@ -177,8 +189,12 @@ const ContactSection = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancel}>No</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirm}>Yes</AlertDialogAction>
+            <AlertDialogCancel asChild>
+              <button type="button" onClick={handleCancel}>No</button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <button type="button" onClick={handleConfirm}>Yes</button>
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
