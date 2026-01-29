@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Github, Folder, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Github, Folder, ChevronLeft, ChevronRight, Sparkles, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const projects = [
@@ -102,15 +102,23 @@ const ProjectCard = ({
             >
               <Folder className="w-full h-full text-white" />
             </motion.div>
-            <motion.a
-              href={project.github}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="View source code"
-              whileHover={{ scale: 1.2, rotate: 10 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Github className="w-5 h-5" />
-            </motion.a>
+            {project.github !== '#' && (
+              <motion.a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label={project.github.includes('github.com') ? 'View source code' : 'View live demo'}
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {project.github.includes('github.com') ? (
+                  <Github className="w-5 h-5" />
+                ) : (
+                  <ExternalLink className="w-5 h-5" />
+                )}
+              </motion.a>
+            )}
           </div>
 
           <motion.h3 
