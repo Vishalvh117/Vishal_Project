@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const projects = [
   {
-    title: 'PhishGuard',
+    title: 'ClickSafe',
     description:
       'A security application that detects and identifies fraud websites to protect users from phishing attacks.',
     tech: ['Python', 'Machine Learning', 'Web Security', 'Flask'],
