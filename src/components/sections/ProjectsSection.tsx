@@ -9,7 +9,7 @@ const projects = [
     description:
       'A security application that detects and identifies fraud websites to protect users from phishing attacks.',
     tech: ['Python', 'Machine Learning', 'Web Security', 'Flask'],
-    github: 'https://github.com/Vishalvh117/ClickSafe',
+    github: 'https://click-safe-six.vercel.app/',
     featured: true,
     gradient: 'from-cyan-500 to-blue-500',
   },
