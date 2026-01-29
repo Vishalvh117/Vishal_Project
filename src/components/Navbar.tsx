@@ -110,8 +110,8 @@ const Navbar = () => {
             transition={{ duration: 0.2 }}
             className="fixed inset-x-0 top-16 z-40 md:hidden"
           >
-            <div className="container px-4">
-              <div className="glass-card rounded-2xl p-4 space-y-2">
+            <div className="container px-4 pointer-events-none">
+              <div className="glass-card rounded-2xl p-4 space-y-2 pointer-events-none">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.label}
@@ -128,12 +128,12 @@ const Navbar = () => {
                         }, 100);
                       }
                     }}
-                    className="block w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 rounded-lg transition-colors"
+                    className="block w-full text-left px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 rounded-lg transition-colors pointer-events-auto"
                   >
                     {item.label}
                   </motion.button>
                 ))}
-                <div className="pt-2 border-t border-border">
+                <div className="pt-2 border-t border-border pointer-events-auto">
                   <Button
                     variant="gradient"
                     size="lg"
