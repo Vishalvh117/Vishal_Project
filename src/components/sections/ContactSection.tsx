@@ -43,6 +43,32 @@ const socialLinks = [
   { icon: Twitter, href: 'https://x.com/Vishal_09117', label: 'Twitter' },
 ];
 
+const openGmailComposeFromMailto = (mailtoHref: string) => {
+  // Try to open Gmail Web Compose reliably (works even if mailto handler isn't set).
+  // Falls back to the original mailto navigation if parsing fails.
+  try {
+    const mailtoUrl = new URL(mailtoHref);
+    const to = mailtoUrl.pathname;
+    const subject = mailtoUrl.searchParams.get('subject') ?? '';
+    const body = mailtoUrl.searchParams.get('body') ?? '';
+
+    const gmailUrl = new URL('https://mail.google.com/mail/');
+    gmailUrl.searchParams.set('view', 'cm');
+    gmailUrl.searchParams.set('fs', '1');
+    if (to) gmailUrl.searchParams.set('to', to);
+    if (subject) gmailUrl.searchParams.set('su', subject);
+    if (body) gmailUrl.searchParams.set('body', body);
+
+    // Must run synchronously inside the click handler, otherwise popup blockers may stop it.
+    const opened = window.open(gmailUrl.toString(), '_blank', 'noopener,noreferrer');
+    if (!opened) {
+      window.location.href = mailtoHref;
+    }
+  } catch {
+    window.location.href = mailtoHref;
+  }
+};
+
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -57,25 +83,22 @@ const ContactSection = () => {
 
   const handleConfirm = useCallback(() => {
     if (pendingAction) {
-      // Close dialog first
+      const { href, external } = pendingAction;
+
+      // IMPORTANT: navigate synchronously inside the click handler
+      // (async delays like setTimeout can trigger popup blockers).
+      if (href.startsWith('mailto:')) {
+        openGmailComposeFromMailto(href);
+      } else if (href.startsWith('tel:')) {
+        window.location.href = href;
+      } else if (external) {
+        window.open(href, '_blank', 'noopener,noreferrer');
+      } else {
+        window.location.href = href;
+      }
+
       setDialogOpen(false);
-      
-      // Use setTimeout to ensure dialog closes before redirect
-      setTimeout(() => {
-        // For all links, use window.open to ensure proper handling
-        if (pendingAction.external) {
-          window.open(pendingAction.href, '_blank', 'noopener,noreferrer');
-        } else {
-          // For mailto: and tel: links, create a temporary anchor and click it
-          const link = document.createElement('a');
-          link.href = pendingAction.href;
-          link.target = '_self';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-        setPendingAction(null);
-      }, 100);
+      setPendingAction(null);
     }
   }, [pendingAction]);
 
@@ -180,7 +203,13 @@ const ContactSection = () => {
       </div>
 
       {/* Confirmation Dialog */}
-      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <AlertDialog
+        open={dialogOpen}
+        onOpenChange={(open) => {
+          setDialogOpen(open);
+          if (!open) setPendingAction(null);
+        }}
+      >
         <AlertDialogContent className="glass-card border-border">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-display">Confirm Redirect</AlertDialogTitle>
@@ -189,12 +218,8 @@ const ContactSection = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel asChild>
-              <button type="button" onClick={handleCancel}>No</button>
-            </AlertDialogCancel>
-            <AlertDialogAction asChild>
-              <button type="button" onClick={handleConfirm}>Yes</button>
-            </AlertDialogAction>
+            <AlertDialogCancel onClick={handleCancel}>No</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirm}>Yes</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
