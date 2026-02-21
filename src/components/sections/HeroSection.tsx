@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TypewriterEffect from '@/components/TypewriterEffect';
 import AnimatedBackground from '@/components/AnimatedBackground';
@@ -116,6 +116,7 @@ const HeroSection = () => {
             {[
               { icon: Github, href: 'https://github.com/Vishalvh117', label: 'GitHub', isExternal: true },
               { icon: Linkedin, href: 'https://www.linkedin.com/in/vishal-haveli-3119371b0/', label: 'LinkedIn', isExternal: true },
+              { icon: Instagram, href: 'https://www.instagram.com/infinite_vishu/', label: 'Instagram', isExternal: true },
               { icon: Mail, href: '#', label: 'Email', isExternal: false, isEmail: true },
             ].map(({ icon: Icon, href, label, isExternal, isEmail }) => (
               <a
